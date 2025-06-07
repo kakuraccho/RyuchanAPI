@@ -1,1 +1,2 @@
 # RyuchanAPI
+This is RyuchanAPI.
