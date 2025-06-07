@@ -3,10 +3,10 @@ import discord
 import os
 
 from dotenv import load_dotenv
-load_dotenv
+load_dotenv()
 
 # botトークンを.envから読み込む
-TOKEN = os.getenv('TOKEN')
+TOKEN = os.getenv('DISCORD_TOKEN')
 
 # discordBotを使うのに必要
 intents = discord.Intents.default()
