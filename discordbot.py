@@ -8,6 +8,11 @@ load_dotenv
 # botトークンを.envから読み込む
 TOKEN = os.getenv('TOKEN')
 
+# discordBotを使うのに必要
+intents = discord.Intents.default()
+# メッセージ内容を取得するにはこれが必要
+intents.message_content = True
+
 # 接続に必要なオブジェクトを生成
 client = discord.Client()
 
