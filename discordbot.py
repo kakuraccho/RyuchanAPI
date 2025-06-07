@@ -14,7 +14,7 @@ intents = discord.Intents.default()
 intents.message_content = True
 
 # 接続に必要なオブジェクトを生成
-client = discord.Client()
+client = discord.Client(intents=intents)
 
 # 起動時に動作する処理
 @client.event
