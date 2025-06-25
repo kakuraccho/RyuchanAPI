@@ -12,9 +12,9 @@ SUPABASE_TOKEN = os.getenv('SUPABASE_TOKEN')
 
 supabase = create_client(SUPABASE_URL, SUPABASE_TOKEN)
 
-class MyBot(discort.Client):
+class MyBot(discord.Client):
     def __init__(self):
-        intents = discord.Intents,default()
+        intents = discord.Intents.default()
         intents.message_content = True
         super().__init__(intents=intents)
         self.tree = app_commands.CommandTree(self)
