@@ -1,6 +1,7 @@
 import discord
 from discord import app_commands
 import os
+import asyncio
 from dotenv import load_dotenv
 from supabase import create_client
 
