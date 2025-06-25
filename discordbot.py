@@ -31,11 +31,11 @@ async def submit(interaction: discord.Interaction):
     await interaction.response.send_message("名言(英文)を入力してください")
 
     def check(m):
-        return m.author.id == interaction.user.id and m.channle == interaction.channel
+        return m.author.id == interaction.user.id and m.channel == interaction.channel
     
     try:
         message = await bot.wait_for("message", check=check, timeout=60.0)
-        supabase.table("meigen").insert({"meinge_eng": message.content}).execute()
+        supabase.table("meigen").insert({"meingen_eng": message.content}).execute()
         await interaction.followup.send("名言を保存しました")
     except asyncio.TimeoutError:
         await interaction.followup.send("時間切れです。もういちど送信してください")
