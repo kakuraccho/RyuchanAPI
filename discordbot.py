@@ -26,7 +26,7 @@ class MyBot(discord.Client):
 
 bot = MyBot()
 
-@bot.tree.command(name="meigenSub")
+@bot.tree.command(name="meigen")
 async def submit(interaction: discord.Interaction):
     await interaction.response.send_message("名言(英文)を入力してください")
 
