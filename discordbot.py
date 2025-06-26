@@ -10,8 +10,10 @@ load_dotenv()
 DISCORD_BOT_TOKEN = os.getenv('DISCORD_TOKEN')
 SUPABASE_URL = os.getenv('SUPABASE_URL')
 SUPABASE_TOKEN = os.getenv('SUPABASE_TOKEN')
+GUILD_ID = int(os.getenv('GUILD_ID'))
 
 supabase = create_client(SUPABASE_URL, SUPABASE_TOKEN)
+GUILD = discord.Object(id=GUILD_ID)
 
 class MyBot(discord.Client):
     def __init__(self):
@@ -19,10 +21,10 @@ class MyBot(discord.Client):
         intents.message_content = True
         super().__init__(intents=intents)
         self.tree = app_commands.CommandTree(self)
-        self.user_states = {}
     
     async def setup_hook(self):
-        await self.tree.sync()
+        await self.tree.clear_commands(guild=GUILD)
+        await self.tree.sync(guild=GUILD)
 
 bot = MyBot()
 
@@ -30,9 +32,6 @@ bot = MyBot()
 async def submit(interaction: discord.Interaction):
     await interaction.response.send_message("名言(英文)を入力してください")
 
-    def check(m):
-        return m.author.id == interaction.user.id and m.channel == interaction.channel
-    
     try:
         message = await bot.wait_for("message", check=check, timeout=60.0)
         supabase.table("meigen").insert({"meingen_eng": message.content}).execute()
