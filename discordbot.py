@@ -40,6 +40,11 @@ async def submit(interaction: discord.Interaction):
     except asyncio.TimeoutError:
         await interaction.followup.send("時間切れです。もういちど送信してください")
 
+# 動作確認コマンド
+@bot.tree.command(name="ping", description="Ping Pong", guild=bot.guild)
+async def ping(interaction: discord.Interaction):
+    await interaction.response.send_message("Pong!")
+
 
 @bot.event
 async def on_ready():
