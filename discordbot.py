@@ -34,10 +34,16 @@ async def submit(interaction: discord.Interaction):
     await interaction.response.send_message("名言(英文)を入力してください")
 
     def check(m):
-        return m.author == interaction.user and m.channel == interaction.channel
-
+        return (
+            m.author == interaction.user and
+            m.channel == interaction.channel and
+            not m.author.bot
+        )
     try:
         message = await bot.wait_for("message", timeout=60.0, check=check)
+        # ---デバッグ用----
+        print(f"Received message: {message.content}")
+        # ----------------
         supabase.table("meigen").insert({"meigen_eng": message.content}).execute()
         await interaction.followup.send("名言を保存しました")
     except asyncio.TimeoutError:
