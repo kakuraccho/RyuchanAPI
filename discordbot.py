@@ -23,7 +23,7 @@ class MyBot(discord.Client):
         self.tree = app_commands.CommandTree(self)
     
     async def setup_hook(self):
-        await self.tree.clear_commands(guild=GUILD)
+        self.tree.clear_commands(guild=GUILD) # 同期処理のためawaitがいらない
         await self.tree.sync(guild=GUILD)
 
 bot = MyBot()
