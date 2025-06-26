@@ -28,19 +28,19 @@ class MyBot(discord.Client):
 
 bot = MyBot()
 
-@bot.tree.command(name="meigen", description="名言(英文)")
+@bot.tree.command(name="meigen", description="名言(英文)", guild=GUILD)
 async def submit(interaction: discord.Interaction):
     await interaction.response.send_message("名言(英文)を入力してください")
 
     try:
-        message = await bot.wait_for("message", check=check, timeout=60.0)
-        supabase.table("meigen").insert({"meingen_eng": message.content}).execute()
+        message = await bot.wait_for("message", timeout=60.0)
+        supabase.table("meigen").insert({"meigen_eng": message.content}).execute()
         await interaction.followup.send("名言を保存しました")
     except asyncio.TimeoutError:
         await interaction.followup.send("時間切れです。もういちど送信してください")
 
 # 動作確認コマンド
-@bot.tree.command(name="ping", description="Ping Pong", guild=bot.guild)
+@bot.tree.command(name="ping", description="Ping Pong", guild=GUILD)
 async def ping(interaction: discord.Interaction):
     await interaction.response.send_message("Pong!")
 
