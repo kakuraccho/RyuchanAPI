@@ -9,7 +9,7 @@ async def save_meigen_to_db(supabase_client, text, user_id, username, guild_id):
             'user_id': str(user_id),
             'username': username,
             'guild_id': str(guild_id)
-        }).execute
+        }).execute()
 
         return True, None
     
