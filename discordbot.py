@@ -16,10 +16,10 @@ GUILD_ID = int(os.getenv('GUILD_ID'))
 if not all([DISCORD_BOT_TOKEN, SUPABASE_URL, SUPABASE_TOKEN, GUILD_ID]):
     raise ValueError("環境変数に異常があります")
 
-
 supabase = create_client(SUPABASE_URL, SUPABASE_TOKEN)
 GUILD = discord.Object(id=GUILD_ID)
 
+# ---ボットのクラス定義
 class MyBot(discord.Client):
     def __init__(self):
         intents = discord.Intents.default()
@@ -28,15 +28,16 @@ class MyBot(discord.Client):
         intents.presences = True
         super().__init__(intents=intents)
         self.tree = app_commands.CommandTree(self)
-    
+
+    # ---コマンド同期のエラーハンドリング---
     async def setup_hook(self):
-        # ---コマンド同期のエラーハンドリング---
         try:
             synced = await self.tree.sync(guild=GUILD)
             print(f"{len(synced)}個のコマンドを同期しました")
         except Exception as e:
             print(f"コマンド同期エラー: {e}")
 
+# ---モーダルのクラス定義
 class MeigenModal(discord.ui.Modal, title='名言(英文)'):
     def __init__(self):
         super().__init__()
@@ -50,10 +51,10 @@ class MeigenModal(discord.ui.Modal, title='名言(英文)'):
     )
 
     async def on_submit(self, interaction: discord.Interaction):
-        english_text = self.text_input.value #入力されたテキストを取得
-        
+        english_text = self.text_input.value
+
+        # ---supabaseに名言を保存---
         try:
-            # ---supabaseに名言を保存---
             result = supabase.table('meigen').insert({
                 'text': english_text,
                 'user_id': str(interaction.user.id),
@@ -82,12 +83,10 @@ async def meigen(interaction: discord.Interaction):
     
     await interaction.response.send_modal(modal)
 
-
 # 動作確認コマンド
 @bot.tree.command(name="ping", description="Ping Pong", guild=GUILD)
 async def ping(interaction: discord.Interaction):
     await interaction.response.send_message("Pong!")
-
 
 @bot.event
 async def on_ready():
