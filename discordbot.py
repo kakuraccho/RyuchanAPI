@@ -1,9 +1,14 @@
+# ---外部ライブラリのインポート---
 import discord
 from discord import app_commands
 import os
 import asyncio
 from dotenv import load_dotenv
 from supabase import create_client
+
+# ---内部ライブラリのインポート---
+import commands
+
 
 load_dotenv()
 
@@ -53,27 +58,23 @@ class MeigenModal(discord.ui.Modal, title='名言(英文)'):
     async def on_submit(self, interaction: discord.Interaction):
         english_text = self.text_input.value
 
-        # ---supabaseに名言を保存---
-        try:
-            result = supabase.table('meigen').insert({
-                'text': english_text,
-                'user_id': str(interaction.user.id),
-                'username': interaction.user.display_name,
-                'guild_id': str(interaction.guild_id)
-            }).execute()
-
+        success, error_message = await commands.save_meigen_to_db(
+            supabase,
+            english_text,
+            interaction.user.id,
+            interaction.user.display_name,
+            interaction.guild_id)
+        
+        if success:
             await interaction.response.send_message(
                 f"名言が保存されました:\n```{english_text}```",
                 ephemeral=True
             )
-
-        except Exception as e:
-            print(f"データベースエラー: {e}")
+        else:
             await interaction.response.send_message(
-                "名言の保存に失敗しました。再度お試しください。",
+                error_message,
                 ephemeral=True
             )
-
 
 bot = MyBot()
 
