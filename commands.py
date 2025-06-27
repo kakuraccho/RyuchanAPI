@@ -1,5 +1,6 @@
 import asyncio
 from supabase import create_client
+import traceback # エラーメッセージを発生させる
 
 # ---supabaseに名言を保存---
 async def save_meigen_to_db(supabase_client, text, user_id, username, guild_id):
@@ -14,5 +15,8 @@ async def save_meigen_to_db(supabase_client, text, user_id, username, guild_id):
         return True, None
     
     except Exception as e:
-        print(f"データベース保存エラー: {e}")
+        print("--- データベース保存エラー（トレースバック開始）---") # エラーメッセージを発生させる
+        traceback.print_exc() # エラーメッセージを発生させる
+        print("--- データベース保存エラー（トレースバック終了）---") # エラーメッセージを発生させる
+        #print(f"データベース保存エラー: {e}")
         return False, "保存中にエラーが発生しました"
