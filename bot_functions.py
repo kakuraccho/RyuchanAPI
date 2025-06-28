@@ -27,7 +27,7 @@ class MyBot(discord.Client):
             print(f"コマンド同期エラー: {e}")
 
 # ---モーダルクラス---
-class MeigenModal(discord.ui.Modal, title='名言(原文)'):
+class MeigenModal(discord.ui.Modal, title='名言'):
     def __init__(self):
         super().__init__()
 
@@ -59,7 +59,7 @@ class MeigenModal(discord.ui.Modal, title='名言(原文)'):
         
         if success:
             await interaction.response.send_message(
-                f"名言が保存されました:\n```{english_text}\n{english_text}```",
+                f"名言が保存されました:\n```{english_text}\n{japanese_text}```",
                 ephemeral=True
             )
         else:
