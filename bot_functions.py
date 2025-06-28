@@ -59,7 +59,7 @@ class MeigenModal(discord.ui.Modal, title='名言(原文)'):
         
         if success:
             await interaction.response.send_message(
-                f"名言が保存されました:\n```{english_text,english_text}```",
+                f"名言が保存されました:\n```{english_text}\n{english_text}```",
                 ephemeral=True
             )
         else:
