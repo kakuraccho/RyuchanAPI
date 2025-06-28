@@ -1,4 +1,5 @@
 import os
+import asyncio
 from dotenv import load_dotenv
 from supabase import create_client
 
@@ -16,3 +17,8 @@ if not all([DISCORD_BOT_TOKEN, SUPABASE_URL, SUPABASE_TOKEN, GUILD_ID]):
 
 # supabaseクライアント
 supabase = create_client(SUPABASE_URL, SUPABASE_TOKEN)
+
+# イベントループの最適化
+if hasattr(asyncio, 'set_event_loop_policy'):
+    if os.name == 'nt':
+        asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
