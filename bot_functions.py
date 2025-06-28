@@ -27,12 +27,20 @@ class MyBot(discord.Client):
             print(f"コマンド同期エラー: {e}")
 
 # ---モーダルクラス---
-class MeigenModal(discord.ui.Modal, title='名言(英文)'):
+class MeigenModal(discord.ui.Modal, title='名言(原文)'):
     def __init__(self):
         super().__init__()
 
-    text_input = discord.ui.TextInput(
-        label='名言(英文)を入力してください',
+    text_input_english = discord.ui.TextInput(
+        label='名言(原文)を入力してください',
+        style=discord.TextStyle.paragraph,
+        placeholder='ここに入力...',
+        required=True,
+        max_length=4000
+    )
+
+    text_input_japanese = discord.ui.TextInput(
+        label='名言(意味)を入力してください',
         style=discord.TextStyle.paragraph,
         placeholder='ここに入力...',
         required=True,
@@ -40,17 +48,18 @@ class MeigenModal(discord.ui.Modal, title='名言(英文)'):
     )
 
     async def on_submit(self, interaction: discord.Interaction):
-        english_text = self.text_input.value
+        english_text = self.text_input_english.value
+        japanese_text = self.text_input_japanese.value
 
         success, error_message = await save_meigen_to_db(
             english_text,
-            interaction.user.id,
+            japanese_text,
             interaction.user.display_name,
             interaction.guild_id)
         
         if success:
             await interaction.response.send_message(
-                f"名言が保存されました:\n```{english_text}```",
+                f"名言が保存されました:\n```{english_text,english_text}```",
                 ephemeral=True
             )
         else:
@@ -60,11 +69,11 @@ class MeigenModal(discord.ui.Modal, title='名言(英文)'):
             )
 
 # ---/meigen---
-async def save_meigen_to_db(text, user_id, username, guild_id):
+async def save_meigen_to_db(text_eng, text_jpn, username, guild_id):
     try:
         result = supabase.table('meigen').insert({
-            'text': text,
-            'user_id': str(user_id),
+            'text_eng': text_eng,
+            'text_jpn': text_jpn,
             'username': username,
             'guild_id': str(guild_id)
         }).execute()
