@@ -63,7 +63,7 @@ class MeigenModal(discord.ui.Modal, title='名言'):
                 interaction.guild_id)
             
             if success:
-                await interaction.response.send_message(
+                await interaction.followup.send(
                     f"名言が保存されました:\n```{english_text}\n{japanese_text}```",
                     ephemeral=True
                 )
