@@ -17,7 +17,7 @@ if not all([DISCORD_BOT_TOKEN, SUPABASE_URL, SUPABASE_TOKEN, GUILD_ID]):
     raise ValueError("環境変数に異常があります")
 
 # supabaseクライアント
-supabase = create_client(SUPABASE_URL, SUPABASE_TOKEN,SUPABASE_SERVICE_KEY)
+supabase = create_client(SUPABASE_URL, SUPABASE_SERVICE_KEY)
 
 # イベントループの最適化
 if hasattr(asyncio, 'set_event_loop_policy'):
