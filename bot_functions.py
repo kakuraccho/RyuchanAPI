@@ -59,8 +59,7 @@ class MeigenModal(discord.ui.Modal, title='名言'):
             success, error_message = await save_meigen_to_db(
                 english_text,
                 japanese_text,
-                interaction.user.display_name,
-                interaction.guild_id)
+                interaction.user.display_name)
             
             if success:
                 await interaction.followup.send(
@@ -112,7 +111,6 @@ async def save_meigen_to_db(text_eng, text_jpn, username, guild_id):
             'text_eng': text_eng,
             'text_jpn': text_jpn,
             'username': username,
-            'guild_id': str(guild_id)
         }
 
         # タイムアウト付きでデータベースに保存
