@@ -104,7 +104,7 @@ class MeigenModal(discord.ui.Modal, title='名言'):
             pass
 
 # /meigen
-async def save_meigen_to_db(text_eng, text_jpn, username, guild_id):
+async def save_meigen_to_db(text_eng, text_jpn, username):
     try:
         # 非同期処理でタイムアウトを避ける
         data = {
