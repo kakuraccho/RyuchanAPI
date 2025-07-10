@@ -7,6 +7,7 @@ import asyncio
 # 内部ライブラリのインポート
 from config import supabase
 
+# ---クラス定義---
 # ボットクラス
 class MyBot(discord.Client):
     def __init__(self, guild_id):
@@ -103,6 +104,7 @@ class MeigenModal(discord.ui.Modal, title='名言'):
         except:
             pass
 
+# ---コマンド定義---
 # /meigen
 async def save_meigen_to_db(text_eng, text_jpn, username):
     try:
